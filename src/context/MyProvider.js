@@ -5,12 +5,12 @@ import MyContext from './MyContext';
 function Provider({ children }) {
   const [planetsList, setPlanetsList] = useState([]);
   const [filteredPlanet, setFilteredPlanet] = useState('');
-  const [columnFilter, setColumnFilter] = useState('population');
   const [comparisonFilter, setComparisonFilter] = useState('maior que');
   const [valueFilter, setValueFilter] = useState(0);
   const [filtersNotUsedYet, setFiltersNotUsedYet] = useState(
     ['population', 'orbital_period', 'diameter', 'rotation_period', 'surface_water'],
   );
+  const [columnFilter, setColumnFilter] = useState(filtersNotUsedYet[0]);
 
   const requestAPI = async () => {
     const response = await fetch('https://swapi.dev/api/planets');
@@ -43,6 +43,8 @@ function Provider({ children }) {
     const updatedFilters = filtersNotUsedYet
       .filter((element) => element !== columnFilter);
     setFiltersNotUsedYet(updatedFilters);
+    setColumnFilter(updatedFilters[0]);
+
     if (comparisonFilter === 'maior que') {
       const filter = planetsList
         .filter((element) => Number(element[columnFilter]) > Number(valueFilter));
